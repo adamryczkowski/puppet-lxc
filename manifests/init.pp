@@ -26,6 +26,7 @@ define lxc (
   $dhcp_range     = '10.0.17.200,10.0.17.254',
   $subuid_base    = undef,
   $subuid_cnt     = undef,
+  $linktoopts     = true,
   $bind_ns        = 'ns',
   $bind_ttl       = '604800',
   $use_bind       = $lxc::params::use_bind) {
@@ -96,34 +97,55 @@ define lxc (
     }
 
     if $unprivileged {
+      if $linktoopts {
+        file { "/opt/lxc/${user}":
+          ensure => directory,
+          owner  => $user,
+        }
+
+        file { "/opt/lxc/${user}/config":
+          ensure => directory,
+          owner  => $user,
+          group  => $user
+        }
+
+        file { "/opt/lxc/${user}/store":
+          ensure => directory,
+          owner  => $user
+        }
+
+        file { "${user_home}/.local/share/lxc":
+          owner  => $user,
+          group  => $user,
+          ensure => link,
+          target => "/opt/lxc/${user}/store"
+        }
+
+        file { "${user_home}/.config/lxc":
+          ensure => link,
+          target => "/opt/lxc/${user}/config",
+          owner  => $user,
+          group  => $user
+        }
+
+      } else {
+        file { "${user_home}/.local/share/lxc":
+          ensure => direcory,
+          mode   => 0755,
+          owner  => $user,
+          group  => $user,
+        }
+
+        file { "${user_home}/.config/lxc":
+          ensure => direcory,
+          mode   => 0755,
+          owner  => $user,
+          group  => $user,
+        }
+
+      }
+
       #     Zrób użytkownika ${user}
-      file { "/opt/lxc/${user}":
-        ensure => directory,
-        owner  => $user,
-      }
-
-      file { "/opt/lxc/${user}/config":
-        ensure => directory,
-        owner  => $user,
-        group  => $user
-      }
-
-      file { "/opt/lxc/${user}/store":
-        ensure => directory,
-        owner  => $user
-      }
-
-      file { "${user_home}/.local/share/lxc":
-        ensure => link,
-        target => "/opt/lxc/${user}/store"
-      }
-
-      file { "${user_home}/.config/lxc":
-        ensure => link,
-        target => "/opt/lxc/${user}/config",
-        owner  => $user,
-        group  => $user
-      }
 
       if $subuid_base == undef {
         $subuid_prefix1 = ""
