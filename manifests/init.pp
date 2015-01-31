@@ -97,7 +97,7 @@ define lxc (
     }
 
     if $unprivileged {
-      if $linktoopts {
+      if $linktoopts == true {
         file { "/opt/lxc/${user}":
           ensure => directory,
           owner  => $user,
@@ -130,14 +130,14 @@ define lxc (
 
       } else {
         file { "${user_home}/.local/share/lxc":
-          ensure => direcory,
+          ensure => directory,
           mode   => 0755,
           owner  => $user,
           group  => $user,
         }
 
         file { "${user_home}/.config/lxc":
-          ensure => direcory,
+          ensure => directory,
           mode   => 0755,
           owner  => $user,
           group  => $user,
