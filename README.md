@@ -80,6 +80,7 @@ Tested Containers:
 Each user gets `uid_<username>` fact with his uid. 
 
 **Example**
+
 `uid_myuser => 1001`
 `uid_alxc => 1004`
 
