@@ -1,0 +1,24 @@
+{
+  "name": "pnd-lxc",
+  "version": "0.0.7",
+  "author": "Edvinas Klovas <edvinas@pnd.io>",
+  "summary": "Puppet module for managing LXC Host and LXC Containers (Linux Containers)",
+  "license": "MIT",
+  "source": "https://github.com/edvinasme/puppet-lxc",
+  "project_page": "https://github.com/edvinasme/puppet-lxc",
+  "issues_url": "https://github.com/edvinasme/puppet-lxc/issues",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Archlinux"
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": "2.7"
+    }
+  ],
+  "dependencies": [
+    {"name":"puppetlabs/stdlib","version_requirement":"3.0"}
+  ]
+}

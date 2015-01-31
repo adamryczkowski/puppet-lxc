@@ -1,0 +1,25 @@
+description "lxc network"
+author "Serge Hallyn <serge.hallyn@canonical.com>"
+
+start on starting lxc-dnsmasq
+stop on stopped lxc-dnsmasq
+
+env USE_LXC_BRIDGE="true"
+env varrun="/run/lxc-host-<%= @name %>"
+
+pre-start script
+
+	sudo -u <%= @user %> -- /usr/bin/lxc-start -n <%= @name %>"
+#TODO
+#TODO
+	touch ${varrun}/network_up
+end script
+
+post-stop script
+	[ -f /etc/default/lxc ] && . /etc/default/lxc
+	[ -f "${varrun}/network_up" ] || exit 0;
+
+	bash -x /usr/local/lib/lxc-scripts/lxc-bridge-parser.sh --conf-file $LXC_NETWORK_CONFIGURATION_FILE --stop-bridges
+
+	rm -f ${varrun}/network_up
+end script

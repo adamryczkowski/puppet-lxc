@@ -1,0 +1,5 @@
+lxc.include = /etc/lxc/default.conf
+lxc.id_map = u 0 <%= scope.function_getbasesubuid([@user])%> <%= scope.function_getcntsubuid([@user])%>
+lxc.id_map = g 0 <%= scope.function_getbasesubgid([@user])%> <%= scope.function_getcntsubgid([@user])%>
+lxc.network.link = <%= bridge_iface %>
+

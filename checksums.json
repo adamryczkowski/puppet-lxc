@@ -1,0 +1,11 @@
+{
+  "Modulefile": "5500a02a976b4e8eb7f27502c031dfe3",
+  "README.md": "eda9f299b201e65f756ac5f9dd6abede",
+  "files/lxc-archlinux": "fa0db912d091261da26f86421664f5ed",
+  "manifests/container.pp": "24f5dad4bfe3d6cff27ea1a7a05ccc6d",
+  "manifests/init.pp": "ea61c7c94819f63e908625c95b364187",
+  "manifests/install/archlinux.pp": "46d9ae315505cade77354d864ac40239",
+  "manifests/params.pp": "fffb56676ebb81a87d1e662c65945a51",
+  "metadata.json": "bc62d0a210447e745d7bf34f4c8e05d3",
+  "templates/container.config.erb": "d76f95e4b5d98a331ae22bcf01ab00a7"
+}
