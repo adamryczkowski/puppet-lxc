@@ -9,6 +9,7 @@ This is Puppet module for managing a host with a farm of (by default unprivilege
 * Supports autostarting the containers; ships with custom upstart scripts for that.
 * All static IPs are managed by dnsmasq (in /etc/lxc/dnsmasq.conf) rather than in the container itself. This ensures there are no IP collisions.
 * Supports installation of puppet client on the guest (uses supplied fqdn as a certname identifying the node)
+* Allows for simple management of user's subuids a subgids. At this moment allows only for one continuous block of ids.
 
 ## Possible problems
 * Due to the lxc bug, after the first run you must restart the host.
@@ -66,3 +67,26 @@ Tested Containers:
         puppet_server_host => 'puppetmaster.example.com'
       }
     }
+
+## Custom facts
+### `getsubuid` and `getsubgid`
+`getsubuid` returns and array of subuids and subgids necessary for managing unprivileged containers. For parsing this array use custom functions `getbasesubuid`, `getbasesubgid`, `getcntsubuid` and `getcntsubgid`.
+
+**Example:**
+`getsubuid => myuser:100000:65536|myuser2:165536:65536|mlxc:231072:65536|alxc:296608:65536|pupecik:362144:65536|`
+`getsubgid => myuser:100000:65536|myuser2:165536:65536|mlxc:231072:65536|alxc:296608:65536|pupecik:362144:65536|`
+
+### `uid_myuser`
+Each user gets `uid_<username>` fact with his uid. 
+
+**Example**
+`uid_myuser => 1001`
+`uid_alxc => 1004`
+
+## Custom functions
+### `getbasesubuid` and `getbasesubgid`
+`getbasesubuid('myuser')` returns base of the range of the continuous block of subuids/subgids
+
+### `getcntsubuid` and `getcntsubgid`
+`getcntsubuid('myuser')` returns number of uids in the continuous block of subuids/subgids
+
