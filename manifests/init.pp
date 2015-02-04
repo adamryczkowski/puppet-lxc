@@ -47,11 +47,14 @@ define lxc (
 
     }
 
-    shorewall::interfaces::entry { $bridge_iface:
-      zone    => 'lxc',
-      rfc1918 => true,
-      dhcp    => true,
-      options => 'bridge,routeback';
+    if defined(Package['shorewall']) {
+      shorewall::interfaces::entry { $bridge_iface:
+        zone    => 'lxc',
+        rfc1918 => true,
+        dhcp    => true,
+        options => 'bridge,routeback';
+      }
+
     }
 
     #  if $use_bind {

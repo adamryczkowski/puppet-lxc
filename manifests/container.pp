@@ -15,6 +15,7 @@ define lxc::container (
   $fqdn                = undef,
   $lxcuser             = undef,
   $aptproxy            = undef,
+  $ssh_nat_port        = undef,
   $puppet_server_host  = 'puppetmaster',
   $puppet_server_ip    = '127.0.0.1') {
   # directory of lxc_auto file is used to check if lxc container is created
@@ -64,30 +65,16 @@ define lxc::container (
 
     case $ensure {
       'present' : {
-        #        if $autoboot {
-        #          #        file { "/etc/init/lxc-host-${name}.conf":
-        #          #          ensure  => 'present',
-        #          #          content => template('lxc/init-script.config.erb'),
-        #          #          require => [File['/etc/lxc/guests'], Exec["lxc-create ${name}"]]
-        #          #        }
-        #
-        #          augeas { "lxc ${name} autostart":
-        #            incl    => "${config_gile}",
-        #            lens    => 'PHP.lns',
-        #            #         onlyif  => "get .anon/lxc.start.auto != 1",
-        #            changes => "set .anon/lxc.start.auto 1",
-        #            require => Exec["lxc-create ${name}"]
-        #          }
-        #        } else {
-        #          augeas { "lxc ${name} autostart":
-        #            incl    => "${config_gile}",
-        #            lens    => 'PHP.lns',
-        #            #         onlyif  => "get .anon/lxc.start.auto != 0",
-        #            changes => "set .anon/lxc.start.auto 0",
-        #            require => Exec["lxc-create ${name}"]
-        #          }
-        #
-        #        }
+        if $ssh_nat_port != undef and defined(Package['shorewall']) {
+          shorewall::rules::entry { "incoming-ssh-${name}":
+            source          => 'all',
+            destination     => "lxc:${name}:22",
+            action          => 'DNAT',
+            proto           => 'tcp',
+            destinationport => $ssh_nat_port,
+            order           => 110;
+          }
+        }
 
         if $facts != undef {
           file { "${lxc_root}/etc/facter":
