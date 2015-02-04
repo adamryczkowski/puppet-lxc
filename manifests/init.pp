@@ -47,6 +47,13 @@ define lxc (
 
     }
 
+    shorewall::interfaces::entry { $bridge_iface:
+      zone    => 'lxc',
+      rfc1918 => true,
+      dhcp    => true,
+      options => 'bridge,routeback';
+    }
+
     #  if $use_bind {
     #    if $bridge_network =~ /(\d{1,3}).(\d{1,3}).(\d{1,3}).(\d{1,3})\/(\d+)/ {
     #      $netsize = $5
