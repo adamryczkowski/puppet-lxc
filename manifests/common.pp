@@ -6,16 +6,17 @@ class lxc::common ($use_bind = $lxc::params::use_bind, $unprivileged = $lxc::par
 
   }
 
-  if defined(Package['shorewall']) {
-    shorewall::zones::entry { 'lxc': type => 'ip' }
+  #  if defined(Package['shorewall']) {
+  shorewall::zones::entry { 'lxc': type => 'ip' }
 
-    shorewall::policy::entry { 'lxc-to-all':
-      sourcezone      => 'lxc',
-      destinationzone => 'all',
-      policy          => 'ACCEPT',
-      order           => 110
-    }
+  shorewall::policy::entry { 'lxc-to-all':
+    sourcezone      => 'lxc',
+    destinationzone => 'all',
+    policy          => 'ACCEPT',
+    order           => 110
   }
+
+  #  }
 
   package { 'lxc': ensure => installed }
 
