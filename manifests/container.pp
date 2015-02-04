@@ -64,30 +64,30 @@ define lxc::container (
 
     case $ensure {
       'present' : {
-        if $autoboot {
-          #        file { "/etc/init/lxc-host-${name}.conf":
-          #          ensure  => 'present',
-          #          content => template('lxc/init-script.config.erb'),
-          #          require => [File['/etc/lxc/guests'], Exec["lxc-create ${name}"]]
-          #        }
-
-          augeas { "lxc ${name} autostart":
-            incl    => "${config_gile}",
-            lens    => 'PHP.lns',
-            #         onlyif  => "get .anon/lxc.start.auto != 1",
-            changes => "set .anon/lxc.start.auto 1",
-            require => Exec["lxc-create ${name}"]
-          }
-        } else {
-          augeas { "lxc ${name} autostart":
-            incl    => "${config_gile}",
-            lens    => 'PHP.lns',
-            #         onlyif  => "get .anon/lxc.start.auto != 0",
-            changes => "set .anon/lxc.start.auto 0",
-            require => Exec["lxc-create ${name}"]
-          }
-
-        }
+        #        if $autoboot {
+        #          #        file { "/etc/init/lxc-host-${name}.conf":
+        #          #          ensure  => 'present',
+        #          #          content => template('lxc/init-script.config.erb'),
+        #          #          require => [File['/etc/lxc/guests'], Exec["lxc-create ${name}"]]
+        #          #        }
+        #
+        #          augeas { "lxc ${name} autostart":
+        #            incl    => "${config_gile}",
+        #            lens    => 'PHP.lns',
+        #            #         onlyif  => "get .anon/lxc.start.auto != 1",
+        #            changes => "set .anon/lxc.start.auto 1",
+        #            require => Exec["lxc-create ${name}"]
+        #          }
+        #        } else {
+        #          augeas { "lxc ${name} autostart":
+        #            incl    => "${config_gile}",
+        #            lens    => 'PHP.lns',
+        #            #         onlyif  => "get .anon/lxc.start.auto != 0",
+        #            changes => "set .anon/lxc.start.auto 0",
+        #            require => Exec["lxc-create ${name}"]
+        #          }
+        #
+        #        }
 
         if $facts != undef {
           file { "${lxc_root}/etc/facter":

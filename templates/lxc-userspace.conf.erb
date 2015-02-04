@@ -10,6 +10,7 @@ lxc.arch = x86_64
 # Container specific configuration
 lxc.rootfs = <%= user_home %>/.local/share/lxc/<%= name %>/rootfs
 lxc.utsname = <%= fqdn %>
+lxc.start.auto = <%= autoboot %>
 
 # Network configuration
 lxc.network.type = veth
