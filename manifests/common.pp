@@ -254,8 +254,16 @@ class lxc::common ($use_bind = $lxc::params::use_bind, $unprivileged = $lxc::par
     require => Package['lxc']
   }
 
-  file { '/etc/init.d/dnsmasq.override':
-    content => 'manual',
+  #  file { '/etc/init.d/dnsmasq.override':
+  #    content => 'manual',
+  #    require => Package['dnsmasq']
+  #  }
+
+  augeas { "DISABLE dnsmasq":
+    incl    => "/etc/default/dnsmasq",
+    lens    => 'Shellvars.lns',
+    onlyif  => "get ENABLED != 0",
+    changes => "set ENABLED 0",
     require => Package['dnsmasq']
   }
 
