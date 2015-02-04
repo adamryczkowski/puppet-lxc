@@ -75,7 +75,7 @@ define lxc::container (
             incl    => "${config_gile}",
             lens    => 'PHP.lns',
             #         onlyif  => "get .anon/lxc.start.auto != 1",
-            changes => "set /files${config_file}/.anon/lxc.start.auto 1",
+            changes => "set .anon/lxc.start.auto 1",
             require => Exec["lxc-create ${name}"]
           }
         } else {
@@ -83,7 +83,7 @@ define lxc::container (
             incl    => "${config_gile}",
             lens    => 'PHP.lns',
             #         onlyif  => "get .anon/lxc.start.auto != 0",
-            changes => "set /files${config_file}/.anon/lxc.start.auto 0",
+            changes => "set .anon/lxc.start.auto 0",
             require => Exec["lxc-create ${name}"]
           }
 
