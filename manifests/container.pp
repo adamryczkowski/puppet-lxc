@@ -65,7 +65,7 @@ define lxc::container (
 
     case $ensure {
       'present' : {
-        if $ssh_nat_port != undef { # and defined(Package['shorewall'])
+        if $ssh_nat_port != undef and defined(Package['shorewall']) {
           shorewall::rules::entry { "incoming-ssh-${name}":
             source          => 'all',
             destination     => "lxc:${name}:22",
