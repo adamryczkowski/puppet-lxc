@@ -254,7 +254,7 @@ class lxc::common ($use_bind = $lxc::params::use_bind, $unprivileged = $lxc::par
     require => Package['lxc']
   }
 
-  file { '/etc/init/dnsmasq.override':
+  file { '/etc/init.d/dnsmasq.override':
     content => 'manual',
     require => Package['dnsmasq']
   }
