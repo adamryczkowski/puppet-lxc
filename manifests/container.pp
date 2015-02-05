@@ -204,8 +204,8 @@ define lxc::container (
         if $aptproxy != undef and $unprivileged {
           file { "${lxc_root}/etc/apt/apt.conf.d/31apt-cacher-ng":
             content => "Acquire::http { Proxy \"http://${aptproxy}\"; };",
-            owner   => $user,
-            group   => $user,
+            owner   => getbasesubuid($user),
+            group   => getbasesubgid($user),
             mode    => 0644,
             require => Exec["lxc-create ${name}"]
           }
