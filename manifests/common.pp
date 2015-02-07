@@ -16,6 +16,28 @@ class lxc::common ($use_bind = $lxc::params::use_bind, $unprivileged = $lxc::par
       order           => 110
     }
 
+    shorewall::policy::entry { 'lxc-to-all':
+      sourcezone      => '$FW',
+      destinationzone => 'lxc',
+      policy          => 'ACCEPT',
+      order           => 110
+    }
+
+    shorewall::rules::entry {
+      'lxc ping-to-host':
+        source      => 'lxc',
+        destination => '$FW',
+        order       => 210,
+        action      => 'Ping(ACCEPT)';
+
+      'icmp $FW->lxc':
+        source      => '$FW',
+        destination => 'lxc',
+        proto       => 'icmp',
+        order       => 210,
+        action      => 'ACCEPT';
+    }
+
   }
 
   package { 'lxc': ensure => installed }
@@ -279,4 +301,3 @@ class lxc::common ($use_bind = $lxc::params::use_bind, $unprivileged = $lxc::par
     require => Package['dnsmasq']
   }
 
-}
