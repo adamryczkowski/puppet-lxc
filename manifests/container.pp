@@ -77,7 +77,7 @@ define lxc::container (
         }
 
         if $facts != undef {
-          $new_facts = merge(facts, {
+          $new_facts = merge($facts, {
             'inside_shorewall_dnat' => true
           }
           )
