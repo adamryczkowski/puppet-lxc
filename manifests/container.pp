@@ -89,7 +89,8 @@ define lxc::container (
 
         file { "${lxc_root}/etc/facter":
           ensure  => 'directory',
-          owner   => $user,
+          owner   => getbasesubuid($user),
+          group   => getbasesubgid($user),
           require => Exec["lxc-create ${name}"],
         }
 
@@ -98,7 +99,7 @@ define lxc::container (
           owner  => $user
         }
 
-        file { "{$lxc_root}/etc/facter/facts.d/lxc_module.yaml":
+        file { "${lxc_root}/etc/facter/facts.d/lxc_module.yaml":
           ensure  => 'present',
           require => Exec["lxc-create ${name}"],
           content => inline_template('<%= new_facts.to_yaml %>');
