@@ -76,28 +76,26 @@ define lxc::container (
           }
         }
 
-        if $facts != undef {
-          file { "${lxc_root}/etc/facter":
-            ensure  => 'directory',
-            owner   => $user,
-            require => Exec["lxc-create ${name}"],
-          }
+        file { "${lxc_root}/etc/facter":
+          ensure  => 'directory',
+          owner   => $user,
+          require => Exec["lxc-create ${name}"],
+        }
 
-          file { "${lxc_root}/etc/facter/facts.d":
-            ensure => 'directory',
-            owner  => $user
-          }
+        file { "${lxc_root}/etc/facter/facts.d":
+          ensure => 'directory',
+          owner  => $user
+        }
 
-          $new_facts = merge(facts, {
-            'inside_shorewall_dnat' => true
-          }
-          )
+        $new_facts = merge(facts, {
+          'inside_shorewall_dnat' => true
+        }
+        )
 
-          file { "{$lxc_root}/etc/facter/facts.d/lxc_module.yaml":
-            ensure  => 'present',
-            require => Exec["lxc-create ${name}"],
-            content => inline_template('<%= new_facts.to_yaml %>');
-          }
+        file { "{$lxc_root}/etc/facter/facts.d/lxc_module.yaml":
+          ensure  => 'present',
+          require => Exec["lxc-create ${name}"],
+          content => inline_template('<%= new_facts.to_yaml %>');
         }
 
         augeas { "lxc ${name} lxc.include local config":
