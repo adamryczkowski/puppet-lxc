@@ -76,6 +76,17 @@ define lxc::container (
           }
         }
 
+        if $facts != undef {
+          $new_facts = merge(facts, {
+            'inside_shorewall_dnat' => true
+          }
+          )
+        } else {
+          $new_facts = {
+            'inside_shorewall_dnat' => true
+          }
+        }
+
         file { "${lxc_root}/etc/facter":
           ensure  => 'directory',
           owner   => $user,
@@ -86,11 +97,6 @@ define lxc::container (
           ensure => 'directory',
           owner  => $user
         }
-
-        $new_facts = merge(facts, {
-          'inside_shorewall_dnat' => true
-        }
-        )
 
         file { "{$lxc_root}/etc/facter/facts.d/lxc_module.yaml":
           ensure  => 'present',
