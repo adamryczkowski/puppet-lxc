@@ -88,10 +88,15 @@ define lxc::container (
             owner  => $user
           }
 
+          $new_facts = merge(facts, {
+            'inside_shorewall_dnat' => true
+          }
+          )
+
           file { "{$lxc_root}/etc/facter/facts.d/lxc_module.yaml":
             ensure  => 'present',
             require => Exec["lxc-create ${name}"],
-            content => inline_template('<%= facts.to_yaml %>');
+            content => inline_template('<%= new_facts.to_yaml %>');
           }
         }
 
