@@ -16,7 +16,7 @@ class lxc::common ($use_bind = $lxc::params::use_bind, $unprivileged = $lxc::par
       order           => 110
     }
 
-    shorewall::policy::entry { 'lxc-to-all':
+    shorewall::policy::entry { '$FW-to-lxc':
       sourcezone      => '$FW',
       destinationzone => 'lxc',
       policy          => 'ACCEPT',
