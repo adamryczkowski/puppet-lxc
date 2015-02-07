@@ -99,8 +99,6 @@ define lxc::container (
           owner  => $user
         }
 
-        notify { "custom facts in ${name}: $new_facts": }
-
         file { "${lxc_root}/etc/facter/facts.d/lxc_module.yaml":
           ensure  => 'present',
           require => Exec["lxc-create ${name}"],
