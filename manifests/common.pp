@@ -93,11 +93,11 @@ class lxc::common ($use_bind = $lxc::params::use_bind, $unprivileged = $lxc::par
       owner  => $user,
     }
 
-    sshkey { 'localhost':
-      ensure => present,
-      type   => 'rsa',
-      key    => $::sshecdsakey,
-    }
+    #    sshkey { 'localhost':
+    #      ensure => present,
+    #      type   => 'rsa',
+    #      key    => $::sshecdsakey,
+    #    }
 
     sshkeys::create_ssh_key { "root": }
 
