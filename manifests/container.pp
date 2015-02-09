@@ -14,6 +14,7 @@ define lxc::container (
   $puppet              = false,
   $fqdn                = undef,
   $lxcuser             = undef,
+  $ssh_user            = undef,
   $aptproxy            = undef,
   $ssh_nat_port        = undef,
   $puppet_server_host  = 'puppetmaster',
