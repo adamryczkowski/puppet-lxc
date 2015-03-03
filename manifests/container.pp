@@ -99,7 +99,6 @@ define lxc::container (
           ensure => 'directory',
           owner  => getbasesubuid($user),
           group  => getbasesubgid($user),
-          owner  => $user
         }
 
         file { "${lxc_root}/etc/facter/facts.d/lxc_module.yaml":
