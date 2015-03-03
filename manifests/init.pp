@@ -202,7 +202,8 @@ define lxc (
 
       sshkeys::set_authorized_key { "root@localhost to ${user}@localhost":
         local_user  => $user,
-        remote_user => "root@${::fqdn}",
+        #        remote_user => "root@${::fqdn}",
+        remote_user => "root@$localhost",
         require     => Sshkeys::Create_ssh_key[$user]
       }
 

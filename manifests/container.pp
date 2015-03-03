@@ -172,7 +172,8 @@ define lxc::container (
             owner   => $user,
             group   => $user,
             content => template("lxc/lxc-userspace.conf.erb"),
-            before  => Exec["lxc-start ${name}"]
+            before  => Exec["lxc-start ${name}"],
+            require => Exec["lxc-create ${name}"]
           }
           $sshprefix = "/usr/bin/ssh ${user}@${::fqdn}"
         } else {
