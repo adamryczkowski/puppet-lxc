@@ -97,6 +97,8 @@ define lxc::container (
 
         file { "${lxc_root}/etc/facter/facts.d":
           ensure => 'directory',
+          owner  => getbasesubuid($user),
+          group  => getbasesubgid($user),
           owner  => $user
         }
 
