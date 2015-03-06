@@ -60,9 +60,6 @@ define lxc (
     # lxcd            soft    nofile          1024
     # lxcd            hard    nofile          8192
 
-    class { 'limits':
-      use_hiera => false,
-    }
 
     limits::entry { $name:
       domain => ${user},
