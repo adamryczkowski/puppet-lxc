@@ -62,7 +62,7 @@ define lxc (
 
 
     limits::entry { $name:
-      domain => ${user},
+      domain => "${user}",
       type   => 'soft',
       item   => 'nofile',
       value  => 1024
