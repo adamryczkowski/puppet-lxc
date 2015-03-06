@@ -62,10 +62,10 @@ define lxc (
 
 
     limits::fragment {
-      "*/soft/nofile":
+      "${user}/soft/nofile":
         value => "1024";
 
-      "*/hard/nofile":
+      "${user}/hard/nofile":
         value => "8192";
     }
 
