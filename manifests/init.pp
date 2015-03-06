@@ -61,18 +61,12 @@ define lxc (
     # lxcd            hard    nofile          8192
 
 
-    limits::entry { "$name - soft":
-      domain => "${user}",
-      type   => 'soft',
-      item   => 'nofile',
-      value  => 1024
-    }
+    limits::fragment {
+      "*/soft/nofile":
+        value => "1024";
 
-    limits::entry { "$name - hard":
-      domain => "${user}",
-      type   => 'hard',
-      item   => 'nofile',
-      value  => 8192
+      "*/hard/nofile":
+        value => "8192";
     }
 
     #  if $use_bind {
