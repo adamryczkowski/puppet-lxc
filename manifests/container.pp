@@ -77,6 +77,8 @@ define lxc::container (
           }
         }
 
+        @@admin_access::private::clusterssh_fragment { "root@${::fqdn}:${ssh_nat_port}": }
+
         if $facts != undef {
           $new_facts = merge($facts, {
             'inside_shorewall_dnat' => true
