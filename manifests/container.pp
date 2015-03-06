@@ -77,7 +77,7 @@ define lxc::container (
           }
         }
 
-        admin_access::clusterssh_fragment { "${name}@${::fqdn}:${ssh_nat_port}": }
+        admin_access::clusterssh_fragment { "root@${::fqdn}:${ssh_nat_port}": }
 
         if $facts != undef {
           $new_facts = merge($facts, {
