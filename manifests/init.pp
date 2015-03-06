@@ -216,18 +216,13 @@ define lxc (
         local_user  => $user,
         remote_user => "root@${::fqdn}",
         #        remote_user => "root@$localhost",
-        require     => [Sshkeys::Create_ssh_key[$user], File["${user_home}/.ssh/id_rsa"]]
+        #        require     => [Sshkeys::Create_ssh_key[$user]]
+        require     => [File["${user_home}/.ssh/id_rsa"]]
       }
 
       #      sshkeys::create_ssh_key { $user: }
 
-      #      augeas { "lxc ${name} lxc.network.link":
-      #        incl    => "${config_file}",
-      #        lens    => 'PHP.lns',
-      #        #       onlyif  => "get .anon/lxc.network.link != ${bridge_iface}",
-      #        changes => "set .anon/lxc.network.link ${bridge_iface}",
-      #        require => [File["${config_file}"]]
-      #      }
+      # File["${user_home}/.ssh/id_rsa"]
     }
 
   } else {
