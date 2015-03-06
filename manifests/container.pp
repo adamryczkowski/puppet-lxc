@@ -75,9 +75,9 @@ define lxc::container (
             destinationport => $ssh_nat_port,
             order           => 110;
           }
-        }
 
-        @@admin_access::clusterssh_fragment { "root@${::domain}:${ssh_nat_port}": }
+          @@admin_access::clusterssh_fragment { "root@${::domain}:${ssh_nat_port}": }
+        }
 
         if $facts != undef {
           $new_facts = merge($facts, {
