@@ -216,10 +216,10 @@ define lxc (
         local_user  => $user,
         remote_user => "root@${::fqdn}",
         #        remote_user => "root@$localhost",
-        require     => Sshkeys::Create_ssh_key[$user]
+        require     => [Sshkeys::Create_ssh_key[$user], File["${user_home}/.ssh/id_rsa"]]
       }
 
-      sshkeys::create_ssh_key { $user: }
+      #      sshkeys::create_ssh_key { $user: }
 
       #      augeas { "lxc ${name} lxc.network.link":
       #        incl    => "${config_file}",
