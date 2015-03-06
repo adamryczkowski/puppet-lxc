@@ -61,14 +61,14 @@ define lxc (
     # lxcd            hard    nofile          8192
 
 
-    limits::entry { $name:
+    limits::entry { "$name - soft":
       domain => "${user}",
       type   => 'soft',
       item   => 'nofile',
       value  => 1024
     }
 
-    limits::entry { $name:
+    limits::entry { "$name - hard":
       domain => "${user}",
       type   => 'hard',
       item   => 'nofile',
