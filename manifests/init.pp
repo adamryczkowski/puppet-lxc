@@ -57,6 +57,27 @@ define lxc (
 
     }
 
+    # lxcd            soft    nofile          1024
+    # lxcd            hard    nofile          8192
+
+    class { 'limits':
+      use_hiera => false,
+    }
+
+    limits::entry { $name:
+      domain => ${user},
+      type   => 'soft',
+      item   => 'nofile',
+      value  => 1024
+    }
+
+    limits::entry { $name:
+      domain => ${user},
+      type   => 'hard',
+      item   => 'nofile',
+      value  => 8192
+    }
+
     #  if $use_bind {
     #    if $bridge_network =~ /(\d{1,3}).(\d{1,3}).(\d{1,3}).(\d{1,3})\/(\d+)/ {
     #      $netsize = $5
