@@ -220,7 +220,7 @@ define lxc (
       # require     => [File["${user_home}/.ssh/id_rsa"]]
       }
 
-      sshkeys::create_ssh_key { $user: }
+      #      sshkeys::create_ssh_key { $user: }
 
       # File["${user_home}/.ssh/id_rsa"]
     }
