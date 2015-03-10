@@ -280,7 +280,7 @@ define lxc::container (
               File["${lxc_root}/usr/local/lib/lxc-scripts/configure-puppetclient.sh"],
               Exec["Add ${::fqdn} to known hosts..."]],
             environment => ["HOME=${user_home}", "XDG_RUNTIME_DIR=/run/user/${$user_uid}"],
-            before      => Exec['reboot']
+            before      => Exec["reboot ${name}"]
           }
 
           file { "${lxc_root}/usr/local/lib/lxc-scripts":
@@ -288,7 +288,7 @@ define lxc::container (
             owner   => $user,
             group   => $user,
             require => Exec["lxc-create ${name}"],
-            before  => Exec['reboot']
+            before  => Exec["reboot ${name}"]
           }
 
           file { "${lxc_root}/usr/local/lib/lxc-scripts/configure-puppetclient.sh":
@@ -297,7 +297,7 @@ define lxc::container (
             group   => $user,
             source  => "puppet:///modules/lxc/configure-puppetclient.sh",
             require => Exec["lxc-create ${name}"],
-            before  => Exec['reboot']
+            before  => Exec["reboot ${name}"]
           }
 
           file { "${lxc_root}/usr/local/lib/lxc-scripts/common.sh":
@@ -306,11 +306,11 @@ define lxc::container (
             group   => $user,
             source  => "puppet:///modules/lxc/common.sh",
             require => Exec["lxc-create ${name}"],
-            before  => Exec['reboot']
+            before  => Exec["reboot ${name}"]
           }
         }
 
-        exec { 'reboot':
+        exec { "reboot ${name}":
           command     => "/usr/bin/lxc-stop -n ${name} && /usr/bin/lxc-start -d -n ${name}",
           refreshonly => true,
           require     => Exec["Install ssh for lxc ${name}"]
