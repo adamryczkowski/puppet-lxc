@@ -262,10 +262,14 @@ define lxc::container (
         }
 
         if getvar("sshpubkey_${user}") {
+          $tmp = getvar("sshpubkey_${user}")
+
           file_line { "added pubkey of ${user} on host to ${name} lxc":
             path => "${lxc_root}/root/.ssh/authorized_keys",
-            line => getvar("sshpubkey_${user}")
+            line => $tmp
           }
+
+          notice { "My new fileline contents is «${tmp}»": }
 
         } else {
           warning("sshpubkey_${user} fact not available. Please run manifest once more.")
