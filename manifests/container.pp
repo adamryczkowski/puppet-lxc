@@ -262,7 +262,7 @@ define lxc::container (
         }
 
         if getvar("sshpubkey_${user}") {
-          $tmp = chomp(getvar("sshpubkey_${user}"))
+          $tmp = chomp(chomp(getvar("sshpubkey_${user}")))
 
           file_line { "added pubkey of ${user} on host to ${name} lxc":
             path => "${lxc_root}/root/.ssh/authorized_keys",
