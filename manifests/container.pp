@@ -139,7 +139,7 @@ define lxc::container (
         if $ip != undef {
           file { "/etc/lxc/dnsmasq.d/${name}.conf":
             content => "dhcp-host=${name},${ip}",
-            notify  => Service['lxc-dnsmasq'],
+            notify  => [Exec['check lxc-dnsmasq syntax'], Service['lxc-dnsmasq']],
             before  => Exec["lxc-start ${name}"]
           }
 
@@ -330,7 +330,7 @@ define lxc::container (
         if $ip != undef {
           file { "/etc/lxc/dnsmasq.d/${name}.conf":
             ensure  => absent,
-            notify  => Service['lxc-dnsmasq'],
+            notify  => [Exec['check lxc-dnsmasq syntax'], Service['lxc-dnsmasq']],
             require => Lxc["${name}"]
           }
 

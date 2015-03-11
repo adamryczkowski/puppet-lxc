@@ -16,14 +16,16 @@ class lxc::common ($use_bind = $lxc::params::use_bind, $unprivileged = $lxc::par
       sourcezone      => 'lxc',
       destinationzone => 'all',
       policy          => 'ACCEPT',
-      order           => 110
+      order           => 110,
+      notify          => Service['shorewall']
     }
 
     shorewall::policy::entry { '$FW-to-lxc':
       sourcezone      => '$FW',
       destinationzone => 'lxc',
       policy          => 'ACCEPT',
-      order           => 110
+      order           => 110,
+      notify          => Service['shorewall']
     }
 
     shorewall::rules::entry {
@@ -38,7 +40,8 @@ class lxc::common ($use_bind = $lxc::params::use_bind, $unprivileged = $lxc::par
         destination => 'lxc',
         proto       => 'icmp',
         order       => 210,
-        action      => 'ACCEPT';
+        action      => 'ACCEPT',
+        notify      => Service['shorewall'];
     }
 
   }
@@ -194,7 +197,7 @@ class lxc::common ($use_bind = $lxc::params::use_bind, $unprivileged = $lxc::par
     owner   => root,
     group   => root,
     require => [Package['lxc'], File['/etc/init/lxc-net.conf']],
-    notify  => Service['lxc-dnsmasq']
+    notify  => [Service['lxc-dnsmasq'], Exec['check lxc-dnsmasq syntax']]
   }
 
   file { '/etc/init/lxc-unprivileged-autostart.conf':
@@ -202,7 +205,7 @@ class lxc::common ($use_bind = $lxc::params::use_bind, $unprivileged = $lxc::par
     owner   => root,
     group   => root,
     require => [Package['lxc'], File['/etc/init/lxc-dnsmasq.conf']],
-    notify  => Service['lxc-dnsmasq']
+    notify  => [Service['lxc-dnsmasq'], Exec['check lxc-dnsmasq syntax']]
   }
 
   file { '/etc/init/lxc-unprivileged-autostarts.conf':
@@ -213,9 +216,14 @@ class lxc::common ($use_bind = $lxc::params::use_bind, $unprivileged = $lxc::par
   #    notify  => Service['lxc-unprivileged-autostarts']
   }
 
+  exec { 'check lxc-dnsmasq syntax':
+    refreshonly => true,
+    command     => "/usr/sbin/dnsmasq  --pid-file=/run/lxc-dnsmasq/dnsmasq.pid --conf-file=/etc/lxc/dnsmasq.conf --dhcp-lease-max=253 --keep-in-foreground --test"
+  }
+
   service { 'lxc-dnsmasq':
     ensure  => running,
-    require => [Package['lxc'], File['/etc/init/lxc-dnsmasq.conf'], Service['dnsmasq']],
+    require => [Package['lxc'], File['/etc/init/lxc-dnsmasq.conf'], Service['dnsmasq'], Exec['check lxc-dnsmasq syntax']],
     enable  => true,
   }
 
