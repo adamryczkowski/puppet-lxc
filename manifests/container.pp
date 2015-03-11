@@ -233,7 +233,11 @@ define lxc::container (
         exec { "lxc-start ${name}":
           command => "${sshprefix} /usr/bin/lxc-start -d -n ${name} -o ${user_home}/lxc-${name}.log -l INFO && ${sshprefix} lxc-wait -n ${name} -s RUNNING -t 3",
           unless  => "${sshprefix} /usr/bin/lxc-info -n ${name} | /bin/grep 'State' | /bin/grep 'RUNNING'",
-          require => [Service['lxc-dnsmasq'], Exec["lxc-create ${name}"], Exec["Add ${::fqdn} to known hosts..."]],
+          require => [
+            Exec['check lxc-dnsmasq syntax'],
+            Service['lxc-dnsmasq'],
+            Exec["lxc-create ${name}"],
+            Exec["Add ${::fqdn} to known hosts..."]],
         #        user        => $user,
         }
 
