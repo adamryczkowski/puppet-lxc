@@ -269,8 +269,7 @@ define lxc::container (
             line => $tmp
           }
 
-          notify { "${user}, ${name}: My new fileline contents is «${tmp}»": }
-
+          #          notify { "${user}, ${name}: My new fileline contents is «${tmp}»": }
         } else {
           warning("sshpubkey_${user} fact not available. Please run manifest once more.")
         }
