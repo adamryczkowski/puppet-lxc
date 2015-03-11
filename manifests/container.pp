@@ -9,7 +9,7 @@ define lxc::container (
   $mem_limit           = '512M',
   $mem_plus_swap_limit = '1024M',
   $ip                  = undef,
-  $facts               = undef,
+  $customfacts         = undef,
   $autoboot            = true,
   $puppet              = false,
   $fqdn                = undef,
@@ -79,8 +79,8 @@ define lxc::container (
           @@admin_access::clusterssh_fragment { "root@${::domain}:${ssh_nat_port}": }
         }
 
-        if $facts != undef {
-          $new_facts = merge($facts, {
+        if $customfacts != undef {
+          $new_facts = merge($customfacts, {
             'inside_shorewall_dnat' => true
           }
           )
