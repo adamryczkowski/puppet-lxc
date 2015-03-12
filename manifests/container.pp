@@ -17,6 +17,8 @@ define lxc::container (
   $ssh_user            = undef,
   $aptproxy            = undef,
   $ssh_nat_port        = undef,
+  $storage             = 'best',
+  $create_extra_arg    = '',
   $puppet_server_host  = 'puppetmaster',
   $puppet_server_ip    = '127.0.0.1') {
   # directory of lxc_auto file is used to check if lxc container is created
@@ -25,6 +27,16 @@ define lxc::container (
   $bridge_iface = getparam(Lxc[$user], 'bridge_iface')
 
   #  notify { "Home directory at container ${name} for user ${user} is ${user_home}": }
+
+
+  if $storage {
+    case $storage {
+      'btrfs', 'dir', 'lvm', 'loop', 'zfs', 'best' : { $storage_par = "-B ${storage} ${create_extra_arg}" }
+      default : { fail('Unimplemented storage type') }
+    }
+  } else {
+    $storage_par = $create_extra_arg
+  }
 
   if $user_home {
     if $user == "root" {
@@ -44,12 +56,12 @@ define lxc::container (
         $lxc_prefix2 = "--mirror ${aptproxy}/archive.ubuntu.com/ubuntu"
       }
 
-      $lxc_create = "/usr/bin/lxc-create -n ${name} -t ${template} -- -r ${release} ${lxc_prefix1} ${lxc_prefix2}"
+      $lxc_create = "/usr/bin/lxc-create -n ${name} -t ${template} ${storage_par} -- -r ${release} ${lxc_prefix1} ${lxc_prefix2}"
     } else {
       $unprivileged = true
       # lxc configuration file
       $lxc_prefix   = "${user_home}/.local/share/lxc/${name}"
-      $lxc_create   = "/usr/bin/lxc-create -t download -n ${name} -- -d ${template} -r ${release} -a amd64"
+      $lxc_create   = "/usr/bin/lxc-create -t download -n ${name} ${storage_par} -- -d ${template} -r ${release} -a amd64"
 
     }
   } else {
