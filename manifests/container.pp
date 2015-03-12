@@ -17,7 +17,7 @@ define lxc::container (
   $ssh_user            = undef,
   $aptproxy            = undef,
   $ssh_nat_port        = undef,
-  $storage             = 'best',
+  $storage             = 'btrfs',
   $create_extra_arg    = '',
   $puppet_server_host  = 'puppetmaster',
   $puppet_server_ip    = '127.0.0.1') {
