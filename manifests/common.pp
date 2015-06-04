@@ -9,6 +9,8 @@ class lxc::common ($use_bind = $lxc::params::use_bind, $unprivileged = $lxc::par
   class { 'limits':
   }
 
+  ensure_packages("openssh-server")
+
   if defined(Package['shorewall']) {
     shorewall::zones::entry { 'lxc': type => 'ip' }
 
