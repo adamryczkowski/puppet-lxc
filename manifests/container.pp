@@ -288,7 +288,7 @@ define lxc::container (
 
         if $puppet {
           exec { "Install puppetmaster for lxc ${name}":
-            command     => "${sshprefix} /usr/bin/lxc-attach -n ${name} -- bash -x -- /usr/local/lib/lxc-scripts/configure-puppetclient.sh --puppetmaster ${puppet_server_host}",
+            command     => "${sshprefix} /usr/bin/lxc-attach -n ${name} -- bash -x -- /usr/local/lib/lxc-scripts/configure-puppetclient.sh --puppetmaster ${puppet_server_host} --myfqdn ${fqdn}",
             creates     => "${lxc_root}/usr/bin/puppet",
             timeout     => 900,
             #            user        => $user,
