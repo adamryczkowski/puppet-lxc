@@ -23,7 +23,7 @@ define lxc::container (
   $puppet_server_ip    = '127.0.0.1') {
   # directory of lxc_auto file is used to check if lxc container is created
 
-  $user_home    = gethomedir("${user}")
+  $user_home = gethomedir("${user}")
   $bridge_iface = getparam(Lxc[$user], 'bridge_iface')
 
   #  notify { "Home directory at container ${name} for user ${user} is ${user_home}": }
@@ -42,7 +42,7 @@ define lxc::container (
     if $user == "root" {
       $unprivileged = false
       # lxc configuration file
-      $lxc_prefix   = "/var/lib/lxc/${name}"
+      $lxc_prefix = "/var/lib/lxc/${name}"
 
       if undef == $lxcuser {
         $lxc_prefix1 = ""
@@ -60,8 +60,8 @@ define lxc::container (
     } else {
       $unprivileged = true
       # lxc configuration file
-      $lxc_prefix   = "${user_home}/.local/share/lxc/${name}"
-      $lxc_create   = "/usr/bin/lxc-create -t download -n ${name} ${storage_par} -- -d ${template} -r ${release} -a amd64"
+      $lxc_prefix = "${user_home}/.local/share/lxc/${name}"
+      $lxc_create = "/usr/bin/lxc-create -t download -n ${name} ${storage_par} -- -d ${template} -r ${release} -a amd64"
 
     }
   } else {
@@ -74,7 +74,7 @@ define lxc::container (
 
   if $lxc_prefix {
     $config_file = "${lxc_prefix}/config"
-    $lxc_root    = "${lxc_prefix}/rootfs"
+    $lxc_root = "${lxc_prefix}/rootfs"
 
     case $ensure {
       'present' : {
@@ -168,7 +168,7 @@ define lxc::container (
           }
 
           file { "${lxc_root}/etc/hostname":
-            content => "${fqdn} ${name}",
+            content => "${name}",
             owner   => getbasesubuid($user),
             before  => Exec["lxc-start ${name}"],
             require => [Exec["lxc-create ${name}"], User[$user]]
@@ -288,7 +288,7 @@ define lxc::container (
 
         if $puppet {
           exec { "Install puppetmaster for lxc ${name}":
-            command     => "${sshprefix} /usr/bin/lxc-attach -n ${name} -- bash -- /usr/local/lib/lxc-scripts/configure-puppetclient.sh --puppetmaster ${puppet_server_host}",
+            command     => "${sshprefix} /usr/bin/lxc-attach -n ${name} -- bash -x -- /usr/local/lib/lxc-scripts/configure-puppetclient.sh --puppetmaster ${puppet_server_host}",
             creates     => "${lxc_root}/usr/bin/puppet",
             timeout     => 900,
             #            user        => $user,
