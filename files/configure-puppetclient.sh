@@ -59,6 +59,7 @@ else
 fi
 
 if ! dpkg -s wget>/dev/null  2> /dev/null; then
+    logexec sudo apt-get update
     logexec sudo apt-get --yes install wget
 fi
 
