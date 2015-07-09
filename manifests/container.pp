@@ -12,7 +12,7 @@ define lxc::container (
   $customfacts         = undef,
   $autoboot            = true,
   $puppet              = false,
-  $fqdn                = undef,
+  $fqdn,
   $lxcuser             = undef,
   $ssh_user            = undef,
   $aptproxy            = undef,

@@ -49,13 +49,21 @@ case $key in
 esac
 done
 
+
 if [ -z "$myfqdn" ]; then
 	myfqdn=`hostname --fqdn`
+fi
+
+if [[ "$myfqdn" =~ ([[:alnum:]])+\.([[:alnum:]\.])+ ]]; then
+	name=${BASH_REMATCH[2]}
 else
-	if [ "`cat /etc/hostname`" != "$myfqdn" ]; then
-		$loglog
-		echo "$myfqdn" | sudo tee /etc/hostname
-	fi
+	echo "Nie podano prawidłowej nazwy $myfqdn"!!
+	exit 1
+fi
+
+if ! grep "$127.0.1.1\s+.*$myfqdn"; then
+	$loglog
+	sudo sed -i -e "/\$127.0.1.1\s+.*$myfqdn/d s/.*/127.0.1.1   $myfqdn   $name/" /etc/hosts
 fi
 
 if ! dpkg -s wget>/dev/null  2> /dev/null; then
